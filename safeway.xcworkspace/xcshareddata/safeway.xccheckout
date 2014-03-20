@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>92187BB2-F7B2-4140-B762-9A9F40313B1C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>safeway</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>15EF68D3-1CAB-49B1-BCA8-71FF02DAA34F</key>
+		<string>https://github.com/darkpuca/safeway-ios.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>safeway.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>15EF68D3-1CAB-49B1-BCA8-71FF02DAA34F</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/darkpuca/safeway-ios.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>15EF68D3-1CAB-49B1-BCA8-71FF02DAA34F</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>15EF68D3-1CAB-49B1-BCA8-71FF02DAA34F</string>
+			<key>IDESourceControlWCCName</key>
+			<string>safeway</string>
+		</dict>
+	</array>
+</dict>
+</plist>
