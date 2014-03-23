@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "MasterViewController.h"
+#import "AuthorizeViewController.h"
 
 @implementation AppDelegate
 
@@ -18,9 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // save device-token to user preferences
+    // get saved device_token
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tokenString = [userDefaults valueForKey:@"device-token"];
+    NSString *tokenString = [userDefaults valueForKey:@"device_token"];
     if (nil == tokenString)
     {
         // Let the device know we want to receive push notifications
@@ -29,13 +30,15 @@
     }
     else
     {
-        NSLog(@"saved device-token: %@", tokenString);
+        _pushAvailable = YES;
+        NSLog(@"saved device_token: %@", tokenString);
     }
 
     // Override point for customization after application launch.
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
     controller.managedObjectContext = self.managedObjectContext;
+
     return YES;
 }
 							
@@ -175,13 +178,16 @@
 
     // save device-token to user preferences
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:tokenString forKey:@"device-token"];
+    [userDefaults setObject:tokenString forKey:@"device_token"];
     [userDefaults synchronize];
+
+    _pushAvailable = YES;
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     NSLog(@"Failed to get token, error: %@", error);
+    _pushAvailable = NO;
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -190,6 +196,10 @@
 
 
 }
+
+
+#pragma mark - Functions
+
 
 
 @end

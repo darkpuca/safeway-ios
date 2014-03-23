@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Event">
-        <attribute name="timeStamp" optional="YES" attributeType="Date">
-            <userInfo/>
-        </attribute>
-        <userInfo/>
-    </entity>
-    <entity name="Messages" syncable="YES">
+    <entity name="Message" syncable="YES">
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phone_number" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="receive_time" optional="YES" attributeType="Date" syncable="YES"/>
@@ -14,7 +8,6 @@
         <attribute name="sender_number" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Event" positionX="261" positionY="189" width="128" height="60"/>
-        <element name="Messages" positionX="261" positionY="198" width="128" height="118"/>
+        <element name="Message" positionX="-6444" positionY="-5112" width="128" height="120"/>
     </elements>
 </model>

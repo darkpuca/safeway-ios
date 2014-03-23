@@ -4,3 +4,26 @@ sopro1@snid.kr / Snid1234~
 ## device ##
 darkpuca's iPhone 5
 6bc1b7592a9d92bef9dcaf1308870acf2261b9afa8fb18ded69d6c570dd114fc
+
+## api document url ##
+http://safeway.snid.kr/safeway_api.html
+
+## push test ##
+url: http://safeway.snid.kr/
+account: snid / snid
+
+## push message example ##
+{
+    ID = snid;
+    KEY = 1000140003;
+    NAME = "manual_msg";
+    TEL = "010-9023-1518";
+    aps =     {
+        alert =         {
+            "action-loc-key" = Safeway;
+            body = "[발신자:011-111-2222] test test test";
+        };
+        badge = 1;
+        sound = default;
+    };
+}

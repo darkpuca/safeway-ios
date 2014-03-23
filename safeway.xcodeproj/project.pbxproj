@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A89732D18DEEE28004F06CD /* AuthorizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */; };
 		1AA893E318D4180B000AA769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E218D4180B000AA769 /* Foundation.framework */; };
 		1AA893E518D4180B000AA769 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E418D4180B000AA769 /* CoreGraphics.framework */; };
 		1AA893E718D4180B000AA769 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E618D4180B000AA769 /* UIKit.framework */; };
@@ -17,7 +18,6 @@
 		1AA893F818D4180B000AA769 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AA893F618D4180B000AA769 /* Main.storyboard */; };
 		1AA893FB18D4180B000AA769 /* safeway.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AA893F918D4180B000AA769 /* safeway.xcdatamodeld */; };
 		1AA893FE18D4180B000AA769 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA893FD18D4180B000AA769 /* MasterViewController.m */; };
-		1AA8940118D4180B000AA769 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA8940018D4180B000AA769 /* DetailViewController.m */; };
 		1AA8940318D4180B000AA769 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AA8940218D4180B000AA769 /* Images.xcassets */; };
 		1AA8940A18D4180B000AA769 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA8940918D4180B000AA769 /* XCTest.framework */; };
 		1AA8940B18D4180B000AA769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E218D4180B000AA769 /* Foundation.framework */; };
@@ -39,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A89732B18DEEE28004F06CD /* AuthorizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizeViewController.h; sourceTree = "<group>"; };
+		1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizeViewController.m; sourceTree = "<group>"; };
+		1A89732E18DF07AF004F06CD /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		1AA893DF18D4180B000AA769 /* safeway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = safeway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA893E218D4180B000AA769 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1AA893E418D4180B000AA769 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -54,8 +57,6 @@
 		1AA893FA18D4180B000AA769 /* safeway.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = safeway.xcdatamodel; sourceTree = "<group>"; };
 		1AA893FC18D4180B000AA769 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
 		1AA893FD18D4180B000AA769 /* MasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
-		1AA893FF18D4180B000AA769 /* DetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		1AA8940018D4180B000AA769 /* DetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		1AA8940218D4180B000AA769 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1AA8940818D4180B000AA769 /* safewayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = safewayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA8940918D4180B000AA769 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -132,10 +133,11 @@
 				1AA893F318D4180B000AA769 /* AppDelegate.h */,
 				1AA893F418D4180B000AA769 /* AppDelegate.m */,
 				1AA893F618D4180B000AA769 /* Main.storyboard */,
+				1A89732E18DF07AF004F06CD /* Globals.h */,
 				1AA893FC18D4180B000AA769 /* MasterViewController.h */,
 				1AA893FD18D4180B000AA769 /* MasterViewController.m */,
-				1AA893FF18D4180B000AA769 /* DetailViewController.h */,
-				1AA8940018D4180B000AA769 /* DetailViewController.m */,
+				1A89732B18DEEE28004F06CD /* AuthorizeViewController.h */,
+				1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */,
 				1AA8940218D4180B000AA769 /* Images.xcassets */,
 				1AA893F918D4180B000AA769 /* safeway.xcdatamodeld */,
 				1AA893EB18D4180B000AA769 /* Supporting Files */,
@@ -304,7 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AA8940118D4180B000AA769 /* DetailViewController.m in Sources */,
+				1A89732D18DEEE28004F06CD /* AuthorizeViewController.m in Sources */,
 				1AA893FE18D4180B000AA769 /* MasterViewController.m in Sources */,
 				1AA893FB18D4180B000AA769 /* safeway.xcdatamodeld in Sources */,
 				1AA893F518D4180B000AA769 /* AppDelegate.m in Sources */,
