@@ -14,6 +14,8 @@
 #import <SVProgressHUD.h>
 #import <RaptureXML/RXMLElement.h>
 
+#import "ServerRequestAdapter.h"
+
 @interface AuthorizeViewController ()
 
 @property (nonatomic, strong) NSString *phoneNumber, *authNumber, *deviceToken, *userType;
@@ -91,53 +93,42 @@
 
     [SVProgressHUD showWithStatus:@"인증 번호를 요청중입니다."];
 
+    [ServerRequestAdapter requestPhoneNumberAuthorization:_phoneNumber
+                                                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                      [SVProgressHUD dismiss];
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer = responseSerializer;
+                                                      RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
+                                                      RXMLElement *messageElmt = [resultElmt child:@"message"];
+                                                      NSString *message = messageElmt.text;
 
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [params setValue:_phoneNumber forKey:@"telno"];
+                                                      // 정상적으로 수신한 경우 처리
+                                                      if ([message isEqualToString:@"done"])
+                                                      {
+                                                          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                              message:@"인증 번호가 발송되었습니다. 전송된 인증번호를 입력해 주십시요."
+                                                                                                             delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                    otherButtonTitles:nil];
+                                                          [alertView show];
 
-    [manager POST:AUTHORIZE_URL parameters:params
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//              NSString *responseXml = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//              NSLog(@"response xml: %@", responseXml);
-
-              [SVProgressHUD dismiss];
-
-              RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
-              RXMLElement *messageElmt = [resultElmt child:@"message"];
-              NSString *message = messageElmt.text;
-
-              // 정상적으로 수신한 경우 처리
-              if ([message isEqualToString:@"done"])
-              {
-                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                      message:@"인증 번호가 발송되었습니다. 전송된 인증번호를 입력해 주십시요."
-                                                                     delegate:nil cancelButtonTitle:@"닫기"
-                                                            otherButtonTitles:nil];
-                  [alertView show];
-
-                  [self.phoneNumberField setEnabled:NO];
-                  [self.requestButton setEnabled:NO];
-                  [self.authNumberField setEnabled:YES];
-                  [self.confirmButton setEnabled:YES];
-                  [self.authNumberField becomeFirstResponder];
-              }
-              else
-              {
-                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                      message:@"인증 번호를 요청할 수 없습니다. 잠시후 다시 시도해 주십시요."
-                                                                     delegate:nil cancelButtonTitle:@"닫기"
-                                                            otherButtonTitles:nil];
-                  [alertView show];
-              }
-          }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              [SVProgressHUD dismiss];
-              NSLog(@"Error: %@", error);
-          }];
+                                                          [self.phoneNumberField setEnabled:NO];
+                                                          [self.requestButton setEnabled:NO];
+                                                          [self.authNumberField setEnabled:YES];
+                                                          [self.confirmButton setEnabled:YES];
+                                                          [self.authNumberField becomeFirstResponder];
+                                                      }
+                                                      else
+                                                      {
+                                                          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                              message:@"인증 번호를 요청할 수 없습니다. 잠시후 다시 시도해 주십시요."
+                                                                                                             delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                    otherButtonTitles:nil];
+                                                          [alertView show];
+                                                      }
+                                                  }
+                                                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                      [SVProgressHUD dismiss];
+                                                      NSLog(@"Error: %@", error);
+                                                  }];
 }
 
 - (IBAction)authConfirmPressed:(id)sender
@@ -157,53 +148,45 @@
 
     [SVProgressHUD showWithStatus:@"인증 번호를 확인중입니다."];
 
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.responseSerializer = responseSerializer;
+    [ServerRequestAdapter requestAuthorizeNumberConfirm:_phoneNumber
+                                        authorizeNumber:_authNumber
+                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                    [SVProgressHUD dismiss];
 
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
-    [params setValue:_phoneNumber forKey:@"telno"];
-    [params setValue:_authNumber forKey:@"authno"];
+                                                    NSString *responseXml = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                                                    NSLog(@"response xml: %@", responseXml);
 
-    [manager POST:AUTHORIZE_CONFIRM_URL parameters:params
-          success:^(AFHTTPRequestOperation *operation, id responseObject){
-              [SVProgressHUD dismiss];
+                                                    RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
+                                                    RXMLElement *codeElmt = [resultElmt child:@"code"];
+                                                    NSInteger code = [codeElmt.text integerValue];
 
-              NSString *responseXml = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-              NSLog(@"response xml: %@", responseXml);
+                                                    // 정상적으로 수신한 경우 처리
+                                                    if (0 == code)
+                                                    {
+                                                        RXMLElement *mtypeElmt = [resultElmt child:@"mtype"];
+                                                        _userType = mtypeElmt.text;
 
-              RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
-              RXMLElement *codeElmt = [resultElmt child:@"code"];
-              NSInteger code = [codeElmt.text integerValue];
-
-              // 정상적으로 수신한 경우 처리
-              if (0 == code)
-              {
-                  RXMLElement *mtypeElmt = [resultElmt child:@"mtype"];
-                  _userType = mtypeElmt.text;
-
-                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                      message:@"인증이 완료되었습니다."
-                                                                     delegate:self
-                                                            cancelButtonTitle:@"닫기"
-                                                            otherButtonTitles:nil];
-                  alertView.tag = 100;
-                  [alertView show];
-              }
-              else
-              {
-                  UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                      message:@"인증이 실패하였습니다. 다시 시도해 주십시요."
-                                                                     delegate:nil cancelButtonTitle:@"닫기"
-                                                            otherButtonTitles:nil];
-                  [alertView show];
-              }
-          }
-          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              [SVProgressHUD dismiss];
-              NSLog(@"Error: %@", error);
-          }];
-
+                                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                            message:@"인증이 완료되었습니다."
+                                                                                                           delegate:self
+                                                                                                  cancelButtonTitle:@"닫기"
+                                                                                                  otherButtonTitles:nil];
+                                                        alertView.tag = 100;
+                                                        [alertView show];
+                                                    }
+                                                    else
+                                                    {
+                                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                            message:@"인증이 실패하였습니다. 다시 시도해 주십시요."
+                                                                                                           delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                  otherButtonTitles:nil];
+                                                        [alertView show];
+                                                    }
+                                                }
+                                                failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                    [SVProgressHUD dismiss];
+                                                    NSLog(@"Error: %@", error);
+                                                }];
 }
 
 

@@ -25,6 +25,7 @@
 		1AA8940D18D4180B000AA769 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E818D4180B000AA769 /* CoreData.framework */; };
 		1AA8941518D4180B000AA769 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AA8941318D4180B000AA769 /* InfoPlist.strings */; };
 		1AA8941718D4180B000AA769 /* safewayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA8941618D4180B000AA769 /* safewayTests.m */; };
+		1AB4E2E918E087BF00CDA285 /* ServerRequestAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB4E2E818E087BF00CDA285 /* ServerRequestAdapter.m */; };
 		FA583CC5EAF5436987134B0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 21391D7AD00A461080EB9535 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,8 @@
 		1AA8941218D4180B000AA769 /* safewayTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "safewayTests-Info.plist"; sourceTree = "<group>"; };
 		1AA8941418D4180B000AA769 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1AA8941618D4180B000AA769 /* safewayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = safewayTests.m; sourceTree = "<group>"; };
+		1AB4E2E718E087BF00CDA285 /* ServerRequestAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServerRequestAdapter.h; sourceTree = "<group>"; };
+		1AB4E2E818E087BF00CDA285 /* ServerRequestAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServerRequestAdapter.m; sourceTree = "<group>"; };
 		21391D7AD00A461080EB9535 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		426B91EC1142440A9BE50C66 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -134,6 +137,8 @@
 				1AA893F418D4180B000AA769 /* AppDelegate.m */,
 				1AA893F618D4180B000AA769 /* Main.storyboard */,
 				1A89732E18DF07AF004F06CD /* Globals.h */,
+				1AB4E2E718E087BF00CDA285 /* ServerRequestAdapter.h */,
+				1AB4E2E818E087BF00CDA285 /* ServerRequestAdapter.m */,
 				1AA893FC18D4180B000AA769 /* MasterViewController.h */,
 				1AA893FD18D4180B000AA769 /* MasterViewController.m */,
 				1A89732B18DEEE28004F06CD /* AuthorizeViewController.h */,
@@ -308,6 +313,7 @@
 			files = (
 				1A89732D18DEEE28004F06CD /* AuthorizeViewController.m in Sources */,
 				1AA893FE18D4180B000AA769 /* MasterViewController.m in Sources */,
+				1AB4E2E918E087BF00CDA285 /* ServerRequestAdapter.m in Sources */,
 				1AA893FB18D4180B000AA769 /* safeway.xcdatamodeld in Sources */,
 				1AA893F518D4180B000AA769 /* AppDelegate.m in Sources */,
 				1AA893F118D4180B000AA769 /* main.m in Sources */,
