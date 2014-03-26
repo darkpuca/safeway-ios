@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking.h>
 
+
+
 @interface ServerRequestAdapter : NSObject
 
 + (void)requestPhoneNumberAuthorization:(NSString *)phoneNumber
@@ -20,5 +22,21 @@
                               success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
++ (void)requestRegistDeviceToken:(NSString *)phoneNumber
+                           token:(NSString *)token
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
++ (void)requestMessages:(NSString *)token
+                success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
++ (void)requestUpdateLastMessageIndex:(NSString *)token
+                                index:(NSInteger)index
+                              success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                              failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+
++ (NSDictionary *)parseResponse:(NSData *)responseData;
 
 @end

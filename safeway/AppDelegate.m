@@ -194,13 +194,25 @@
 {
     NSLog(@"Remote notification received: %@", userInfo);
 
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
 
+    if ([navigationController.topViewController isKindOfClass:[MasterViewController class]])
+    {
+        MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
+        [controller updateMessages];
+        [controller.tableView reloadData];
+    }
 
 }
 
 
 #pragma mark - Functions
 
-
+- (void)clearCoreData
+{
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"safeway.sqlite"];
+    NSError *error;
+    [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
+}
 
 @end

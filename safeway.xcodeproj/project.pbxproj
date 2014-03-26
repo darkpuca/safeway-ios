@@ -42,7 +42,6 @@
 /* Begin PBXFileReference section */
 		1A89732B18DEEE28004F06CD /* AuthorizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizeViewController.h; sourceTree = "<group>"; };
 		1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizeViewController.m; sourceTree = "<group>"; };
-		1A89732E18DF07AF004F06CD /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
 		1AA893DF18D4180B000AA769 /* safeway.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = safeway.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA893E218D4180B000AA769 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1AA893E418D4180B000AA769 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -136,7 +135,6 @@
 				1AA893F318D4180B000AA769 /* AppDelegate.h */,
 				1AA893F418D4180B000AA769 /* AppDelegate.m */,
 				1AA893F618D4180B000AA769 /* Main.storyboard */,
-				1A89732E18DF07AF004F06CD /* Globals.h */,
 				1AB4E2E718E087BF00CDA285 /* ServerRequestAdapter.h */,
 				1AB4E2E818E087BF00CDA285 /* ServerRequestAdapter.m */,
 				1AA893FC18D4180B000AA769 /* MasterViewController.h */,

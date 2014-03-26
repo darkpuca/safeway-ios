@@ -5,12 +5,24 @@
 //  Created by darkpuca on 2014. 3. 15..
 //  Copyright (c) 2014년 Kim Dongkyu. All rights reserved.
 //
+#import <SVProgressHUD.h>
+#import <RaptureXML/RXMLElement.h>
 
 #import "MasterViewController.h"
 #import "AuthorizeViewController.h"
+#import "ServerRequestAdapter.h"
+#import "AppDelegate.h"
 
 @interface MasterViewController ()
+
+@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSArray *messages;
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)insertMessages:(NSArray *)messages;
+
+- (void)updateLastIndex:(NSInteger)index;
+
 @end
 
 @implementation MasterViewController
@@ -26,8 +38,8 @@
 	// Do any additional setup after loading the view, typically from a nib.
 //  self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
+//    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
+//    self.navigationItem.rightBarButtonItem = addButton;
 
     [self.tableView setRowHeight:74.0f];
 }
@@ -49,7 +61,13 @@
     else
     {
         // 정상 인증된 기기이면 메세지 리스트 정보 갱신
-        [self.tableView reloadData];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        _deviceToken = [userDefaults valueForKey:@"device_token"];
+
+        // clear core data
+//        AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+//        [appDelegate clearCoreData];
+        [self updateMessages];
     }
 }
 
@@ -68,9 +86,9 @@
     
     // If appropriate, configure the new managed object.
     // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-    [newManagedObject setValue:[NSDate date] forKey:@"receive_time"];
+    [newManagedObject setValue:[NSDate date] forKey:@"send_time"];
     [newManagedObject setValue:@"test message" forKey:@"message"];
-    [newManagedObject setValue:@"010-9023-1518" forKey:@"phone_number"];
+    [newManagedObject setValue:@"010-9023-1518" forKey:@"sender_number"];
     
     // Save the context.
     NSError *error = nil;
@@ -172,7 +190,7 @@
     [fetchRequest setFetchBatchSize:20];
     
     // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"receive_time" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"send_time" ascending:NO];
     NSArray *sortDescriptors = @[sortDescriptor];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
@@ -261,8 +279,73 @@
     UILabel *dateLabel = (UILabel *)[cell viewWithTag:100];
     UILabel *messageLabel = (UILabel *)[cell viewWithTag:102];
 
-    [dateLabel setText:[[object valueForKey:@"receive_time"] description]];
+    [dateLabel setText:[[object valueForKey:@"send_time"] description]];
     [messageLabel setText:[[object valueForKey:@"message"] description]];
 }
+
+
+#pragma mark - Functions
+
+- (void)insertMessages:(NSArray *)messages
+{
+    if (nil == messages) return;
+
+    for (NSDictionary *messageDict in messages)
+    {
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+        NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
+
+        [newManagedObject setValue:messageDict[@"index"] forKey:@"index"];
+        [newManagedObject setValue:messageDict[@"message"] forKey:@"message"];
+        [newManagedObject setValue:messageDict[@"send_time"] forKey:@"send_time"];
+        [newManagedObject setValue:messageDict[@"sender_number"] forKey:@"sender_number"];
+
+        // Save the context.
+        NSError *error = nil;
+        if (![context save:&error])
+        {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        }
+    }
+}
+
+- (void)updateMessages
+{
+    [SVProgressHUD show];
+
+    [ServerRequestAdapter requestMessages:_deviceToken
+                                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                      NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
+                                      if (1 == [responseDict[@"code"] integerValue])
+                                      {
+                                          NSArray *messages = responseDict[@"messages"];
+                                          [self insertMessages:messages];
+
+                                          NSDictionary *lastMessage = [messages lastObject];
+                                          [self updateLastIndex:[lastMessage[@"index"] integerValue]];
+                                      }
+
+                                      [self.tableView reloadData];
+                                      [SVProgressHUD dismiss];
+                                  }
+                                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                      [SVProgressHUD dismiss];
+                                      NSLog(@"Error: %@", error);
+                                  }];
+
+}
+
+- (void)updateLastIndex:(NSInteger)index
+{
+    [ServerRequestAdapter requestUpdateLastMessageIndex:_deviceToken
+                                                  index:index
+                                                success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+                                                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+
+                                                }];
+}
+
 
 @end

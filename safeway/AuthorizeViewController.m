@@ -6,13 +6,10 @@
 //  Copyright (c) 2014년 Kim Dongkyu. All rights reserved.
 //
 
-#import "AuthorizeViewController.h"
-#import "Globals.h"
-#import "AppDelegate.h"
-
-#import <AFNetworking.h>
 #import <SVProgressHUD.h>
-#import <RaptureXML/RXMLElement.h>
+
+#import "AuthorizeViewController.h"
+#import "AppDelegate.h"
 
 #import "ServerRequestAdapter.h"
 
@@ -97,32 +94,32 @@
                                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                       [SVProgressHUD dismiss];
 
-                                                      RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
-                                                      RXMLElement *messageElmt = [resultElmt child:@"message"];
-                                                      NSString *message = messageElmt.text;
-
-                                                      // 정상적으로 수신한 경우 처리
-                                                      if ([message isEqualToString:@"done"])
+                                                      NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
+                                                      if (nil != responseDict)
                                                       {
-                                                          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                                              message:@"인증 번호가 발송되었습니다. 전송된 인증번호를 입력해 주십시요."
-                                                                                                             delegate:nil cancelButtonTitle:@"닫기"
-                                                                                                    otherButtonTitles:nil];
-                                                          [alertView show];
+                                                          // 정상적으로 수신한 경우 처리
+                                                          if ([responseDict[@"message"] isEqualToString:@"done"])
+                                                          {
+                                                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                                  message:@"인증 번호가 발송되었습니다. 전송된 인증번호를 입력해 주십시요."
+                                                                                                                 delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                        otherButtonTitles:nil];
+                                                              [alertView show];
 
-                                                          [self.phoneNumberField setEnabled:NO];
-                                                          [self.requestButton setEnabled:NO];
-                                                          [self.authNumberField setEnabled:YES];
-                                                          [self.confirmButton setEnabled:YES];
-                                                          [self.authNumberField becomeFirstResponder];
-                                                      }
-                                                      else
-                                                      {
-                                                          UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                                              message:@"인증 번호를 요청할 수 없습니다. 잠시후 다시 시도해 주십시요."
-                                                                                                             delegate:nil cancelButtonTitle:@"닫기"
-                                                                                                    otherButtonTitles:nil];
-                                                          [alertView show];
+                                                              [self.phoneNumberField setEnabled:NO];
+                                                              [self.requestButton setEnabled:NO];
+                                                              [self.authNumberField setEnabled:YES];
+                                                              [self.confirmButton setEnabled:YES];
+                                                              [self.authNumberField becomeFirstResponder];
+                                                          }
+                                                          else
+                                                          {
+                                                              UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                                  message:@"인증 번호를 요청할 수 없습니다. 잠시후 다시 시도해 주십시요."
+                                                                                                                 delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                        otherButtonTitles:nil];
+                                                              [alertView show];
+                                                          }
                                                       }
                                                   }
                                                   failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -152,35 +149,30 @@
                                         authorizeNumber:_authNumber
                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                                     [SVProgressHUD dismiss];
-
-                                                    NSString *responseXml = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                                                    NSLog(@"response xml: %@", responseXml);
-
-                                                    RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
-                                                    RXMLElement *codeElmt = [resultElmt child:@"code"];
-                                                    NSInteger code = [codeElmt.text integerValue];
-
-                                                    // 정상적으로 수신한 경우 처리
-                                                    if (0 == code)
+                                                    NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
+                                                    if (nil != responseDict)
                                                     {
-                                                        RXMLElement *mtypeElmt = [resultElmt child:@"mtype"];
-                                                        _userType = mtypeElmt.text;
+                                                        // 정상적으로 수신한 경우 처리
+                                                        if (0 == [responseDict[@"code"] integerValue])
+                                                        {
+                                                            _userType = responseDict[@"mtype"];
 
-                                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                                            message:@"인증이 완료되었습니다."
-                                                                                                           delegate:self
-                                                                                                  cancelButtonTitle:@"닫기"
-                                                                                                  otherButtonTitles:nil];
-                                                        alertView.tag = 100;
-                                                        [alertView show];
-                                                    }
-                                                    else
-                                                    {
-                                                        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                                                            message:@"인증이 실패하였습니다. 다시 시도해 주십시요."
-                                                                                                           delegate:nil cancelButtonTitle:@"닫기"
-                                                                                                  otherButtonTitles:nil];
-                                                        [alertView show];
+                                                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                                message:@"인증이 완료되었습니다."
+                                                                                                               delegate:self
+                                                                                                      cancelButtonTitle:@"닫기"
+                                                                                                      otherButtonTitles:nil];
+                                                            alertView.tag = 100;
+                                                            [alertView show];
+                                                        }
+                                                        else
+                                                        {
+                                                            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                                message:@"인증이 실패하였습니다. 다시 시도해 주십시요."
+                                                                                                               delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                      otherButtonTitles:nil];
+                                                            [alertView show];
+                                                        }
                                                     }
                                                 }
                                                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -199,52 +191,39 @@
         // device token 정보 전송
         [SVProgressHUD showWithStatus:@"푸시 서비스를 위한 정보를 등록중입니다."];
 
-        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
-        manager.responseSerializer = responseSerializer;
+        [ServerRequestAdapter requestRegistDeviceToken:_phoneNumber
+                                                 token:_deviceToken
+                                               success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                   [SVProgressHUD dismiss];
 
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
-        [params setValue:_phoneNumber forKey:@"telno"];
-        [params setValue:_deviceToken forKey:@"uid"];
-        [params setValue:@"I" forKey:@"type"];
-
-        [manager POST:DEVICE_REGISTRATION_URL parameters:params
-              success:^(AFHTTPRequestOperation *operation, id responseObject){
-                  [SVProgressHUD dismiss];
-
-                  NSString *responseXml = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-                  NSLog(@"response xml: %@", responseXml);
-
-                  RXMLElement *resultElmt = [RXMLElement elementFromXMLData:responseObject];
-                  RXMLElement *codeElmt = [resultElmt child:@"code"];
-
-                  NSInteger code = [codeElmt.text integerValue];
-
-                  // 정상적으로 수신한 경우 처리
-                  if (0 == code || 1 == code)
-                  {
-                      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                          message:@"푸시 서비스 정보가 등록되었습니다."
-                                                                         delegate:self
-                                                                cancelButtonTitle:@"닫기"
-                                                                otherButtonTitles:nil];
-                      alertView.tag = 200;
-                      [alertView show];
-                  }
-                  else
-                  {
-                      UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                          message:@"푸시 서비스 정보 등록을 실패했습니다."
-                                                                         delegate:nil cancelButtonTitle:@"닫기"
-                                                                otherButtonTitles:nil];
-                      [alertView show];
-                  }
-              }
-              failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  [SVProgressHUD dismiss];
-                  NSLog(@"Error: %@", error);
-              }];
-
+                                                   NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
+                                                   if (nil != responseDict)
+                                                   {
+                                                       // 정상적으로 수신한 경우 처리
+                                                       NSInteger code = [responseDict[@"code"] integerValue];
+                                                       if (0 == code || 1 == code)
+                                                       {
+                                                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                               message:@"푸시 서비스 정보가 등록되었습니다."
+                                                                                                              delegate:self
+                                                                                                     cancelButtonTitle:@"닫기"
+                                                                                                     otherButtonTitles:nil];
+                                                           alertView.tag = 200;
+                                                           [alertView show];
+                                                       }
+                                                       else
+                                                       {
+                                                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                                                               message:@"푸시 서비스 정보 등록을 실패했습니다."
+                                                                                                              delegate:nil cancelButtonTitle:@"닫기"
+                                                                                                     otherButtonTitles:nil];
+                                                           [alertView show];
+                                                       }
+                                                   }
+                                               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                   [SVProgressHUD dismiss];
+                                                   NSLog(@"Error: %@", error);
+                                               }];
     }
     else if (200 == alertView.tag && 0 == buttonIndex)
     {
