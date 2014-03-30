@@ -11,6 +11,10 @@
 #import "MasterViewController.h"
 #import "AuthorizeViewController.h"
 
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#endif
+
 @implementation AppDelegate
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -188,6 +192,19 @@
 {
     NSLog(@"Failed to get token, error: %@", error);
     _pushAvailable = NO;
+
+#if (TARGET_IPHONE_SIMULATOR)
+    NSString *dev_token = @"6bc1b7592a9d92bef9dcaf1308870acf2261b9afa8fb18ded69d6c570dd114fc";
+
+    // save device-token to user preferences
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:dev_token forKey:@"device_token"];
+    [userDefaults synchronize];
+
+    _pushAvailable = YES;
+
+#endif
+
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo

@@ -4,11 +4,12 @@
         <attribute name="index" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="phone_number" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="section_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="send_time" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="sender_id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="sender_number" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Message" positionX="-6444" positionY="-5112" width="128" height="133"/>
+        <element name="Message" positionX="-6444" positionY="-5112" width="128" height="150"/>
     </elements>
 </model>

@@ -13,15 +13,21 @@
 #import "ServerRequestAdapter.h"
 #import "AppDelegate.h"
 
+static const CGFloat messageCellHeight = 72.0f;
+static const CGFloat messageLabelWidth = 260.0f;
+static const CGFloat messageLabelFontSize = 14.0f;
+
 @interface MasterViewController ()
 
 @property (nonatomic, strong) NSString *deviceToken;
 @property (nonatomic, strong) NSArray *messages;
+@property (nonatomic, assign) BOOL newMessageExist;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 - (void)insertMessages:(NSArray *)messages;
-
 - (void)updateLastIndex:(NSInteger)index;
+- (void)scrollToLastMessage:(BOOL)animated;
+
 
 @end
 
@@ -41,7 +47,8 @@
 //    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
 //    self.navigationItem.rightBarButtonItem = addButton;
 
-    [self.tableView setRowHeight:74.0f];
+    [self.tableView setRowHeight:messageCellHeight];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -79,6 +86,8 @@
 
 - (void)insertNewObject:(id)sender
 {
+    return;
+
     // add sample message
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
     NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
@@ -160,7 +169,26 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 74.0f;
+//    NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    NSString *messageString = [object valueForKey:@"message"];
+//    CGSize maximumSize = CGSizeMake(messageLabelWidth, 1000.0f);
+//    CGSize messageSize = [messageString sizeWithFont:[UIFont systemFontOfSize:messageLabelFontSize]
+//                                   constrainedToSize:maximumSize
+//                                       lineBreakMode:NSLineBreakByWordWrapping];
+//
+//    CGFloat modSize = messageSize.height - 44.0f;
+//    if (modSize < 0.0f)
+//        modSize = 0.0f;
+//
+//    return 74.0f + modSize;
+    return messageCellHeight;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> theSection = [[self.fetchedResultsController sections] objectAtIndex:section];
+    NSString *section_name = [theSection name];
+    return section_name;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -182,31 +210,26 @@
     }
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:self.managedObjectContext];
     [fetchRequest setEntity:entity];
     
-    // Set the batch size to a suitable number.
     [fetchRequest setFetchBatchSize:20];
     
-    // Edit the sort key as appropriate.
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"send_time" ascending:NO];
-    NSArray *sortDescriptors = @[sortDescriptor];
+    NSSortDescriptor *sortDescriptor1 = [[NSSortDescriptor alloc] initWithKey:@"section_name" ascending:YES];
+    NSSortDescriptor *sortDescriptor2 = [[NSSortDescriptor alloc] initWithKey:@"send_time" ascending:YES];
+
+    NSArray *sortDescriptors = @[sortDescriptor1, sortDescriptor2];
     
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    // Edit the section name key path and cache name if appropriate.
-    // nil for section name key path means "no sections".
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:@"Master"];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:@"section_name" cacheName:@"Master"];
     aFetchedResultsController.delegate = self;
     self.fetchedResultsController = aFetchedResultsController;
     
 	NSError *error = nil;
 	if (![self.fetchedResultsController performFetch:&error]) {
-	     // Replace this implementation with code to handle the error appropriately.
-	     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
 	    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-	    abort();
+//	    abort();
 	}
     
     return _fetchedResultsController;
@@ -279,8 +302,23 @@
     UILabel *dateLabel = (UILabel *)[cell viewWithTag:100];
     UILabel *messageLabel = (UILabel *)[cell viewWithTag:102];
 
-    [dateLabel setText:[[object valueForKey:@"send_time"] description]];
-    [messageLabel setText:[[object valueForKey:@"message"] description]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"a h:mm"];
+    [formatter setTimeZone:[NSTimeZone localTimeZone]];
+    NSString *timeString = [formatter stringFromDate:[object valueForKey:@"send_time"]];
+    NSString *messageString = [object valueForKey:@"message"];
+
+    [dateLabel setText:timeString];
+
+    CGRect messageRect = messageLabel.frame;
+
+    CGSize maximumSize = CGSizeMake(messageRect.size.width, 9999);
+    CGSize messageSize = [messageString sizeWithFont:messageLabel.font
+                                   constrainedToSize:maximumSize
+                                       lineBreakMode:messageLabel.lineBreakMode];
+    messageRect.size.height = messageSize.height;
+    [messageLabel setFrame:messageRect];
+    [messageLabel setText:messageString];
 }
 
 
@@ -292,10 +330,20 @@
 
     for (NSDictionary *messageDict in messages)
     {
+        NSInteger messageId = [messageDict[@"index"] integerValue];
+        if (YES == [self isExistMessage:messageId]) continue;
+
         NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
         NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
         NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name] inManagedObjectContext:context];
 
+        NSDate *sendTime = messageDict[@"send_time"];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        [formatter setTimeZone:[NSTimeZone localTimeZone]];
+        NSString *sectionName = [formatter stringFromDate:sendTime];
+
+        [newManagedObject setValue:sectionName forKey:@"section_name"];
         [newManagedObject setValue:messageDict[@"index"] forKey:@"index"];
         [newManagedObject setValue:messageDict[@"message"] forKey:@"message"];
         [newManagedObject setValue:messageDict[@"send_time"] forKey:@"send_time"];
@@ -310,12 +358,35 @@
     }
 }
 
+- (BOOL)isExistMessage:(NSInteger)messageId
+{
+    NSString *predicateString = [NSString stringWithFormat:@"index == %d", messageId];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateString];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Message" inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setPredicate:predicate];
+
+    // Set the batch size to a suitable number.
+    [fetchRequest setFetchBatchSize:20];
+
+	NSError *error = nil;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    if (nil != results && 0 < [results count])
+        return YES;
+
+    return NO;
+}
+
 - (void)updateMessages
 {
     [SVProgressHUD show];
 
     [ServerRequestAdapter requestMessages:_deviceToken
                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                      BOOL added = NO;
                                       NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
                                       if (1 == [responseDict[@"code"] integerValue])
                                       {
@@ -324,12 +395,21 @@
 
                                           NSDictionary *lastMessage = [messages lastObject];
                                           [self updateLastIndex:[lastMessage[@"index"] integerValue]];
+
+                                          added = YES;
+                                      }
+                                      else
+                                      {
+                                          // test proc
+//                                          [self updateLastIndex:100];
                                       }
 
                                       [self.tableView reloadData];
                                       [SVProgressHUD dismiss];
+
+                                      [self scrollToLastMessage:added];
                                   }
-                                  failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                  failure:^(AFHTTPRequestOperation *operation, NSError *error){
                                       [SVProgressHUD dismiss];
                                       NSLog(@"Error: %@", error);
                                   }];
@@ -347,5 +427,12 @@
                                                 }];
 }
 
+- (void)scrollToLastMessage:(BOOL)animated
+{
+    id lastObject = [[self.fetchedResultsController fetchedObjects] lastObject];
+    NSIndexPath *lastIndexPath = [self.fetchedResultsController indexPathForObject:lastObject];
+
+    [self.tableView scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+}
 
 @end
