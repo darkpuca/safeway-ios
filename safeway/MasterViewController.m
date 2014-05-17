@@ -14,8 +14,8 @@
 #import "AppDelegate.h"
 
 static const CGFloat messageCellHeight = 72.0f;
-static const CGFloat messageLabelWidth = 260.0f;
-static const CGFloat messageLabelFontSize = 14.0f;
+//static const CGFloat messageLabelWidth = 260.0f;
+//static const CGFloat messageLabelFontSize = 14.0f;
 
 @interface MasterViewController ()
 

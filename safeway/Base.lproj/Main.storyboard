@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="rS3-R9-Ivy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="rS3-R9-Ivy">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -146,15 +146,41 @@
                             <outlet property="delegate" destination="pGg-6v-bdr" id="Y6K-Cp-Qkv"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Master" id="tQt-TN-PWz"/>
+                    <navigationItem key="navigationItem" title="디아크 등하교 천사" id="tQt-TN-PWz">
+                        <barButtonItem key="rightBarButtonItem" image="icon_setting" id="ww6-nX-LEn">
+                            <connections>
+                                <segue destination="Vcd-Mm-TRa" kind="push" id="xkI-ma-DGY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Cn-md-YlS" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="459" y="64"/>
         </scene>
+        <!--View Controller - 디아크 환경설정-->
+        <scene sceneID="mW9-me-m0d">
+            <objects>
+                <viewController id="Vcd-Mm-TRa" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qbm-X9-oCx"/>
+                        <viewControllerLayoutGuide type="bottom" id="GH1-gj-a3g"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vh5-pL-KPv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="디아크 환경설정" id="Aeo-1O-xJf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nwS-Ib-uBy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="940" y="64"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="default_sender" width="32" height="32"/>
+        <image name="default_sender" width="64" height="64"/>
+        <image name="icon_setting" width="32" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
