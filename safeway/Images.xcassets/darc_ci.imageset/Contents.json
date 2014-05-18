@@ -3,16 +3,16 @@
     {
       "idiom" : "iphone",
       "scale" : "1x",
-      "filename" : "icon_setting.png"
+      "filename" : "darc_ci.png"
     },
     {
       "idiom" : "iphone",
       "scale" : "2x",
-      "filename" : "icon_setting@2x.png"
+      "filename" : "darc_ci@2x.png"
     },
     {
       "idiom" : "iphone",
-      "filename" : "icon_settingR4.png",
+      "filename" : "darc_ciR4.png",
       "subtype" : "retina4",
       "scale" : "2x"
     }

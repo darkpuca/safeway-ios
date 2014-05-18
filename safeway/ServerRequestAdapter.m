@@ -10,11 +10,11 @@
 
 #import "ServerRequestAdapter.h"
 
-NSString *PHONE_NUMBER_AUTHORIZE_URL =  @"http://210.107.227.23/_app/send_auth_sms.php";
-NSString *AUTHORIZE_CONFIRM_URL =       @"http://210.107.227.23/_app/do_check_auth_no.php";
-NSString *GET_MESSAGES_URL =            @"http://210.107.227.23/_app/get_messages.php";
-NSString *DEVICE_REGISTRATION_URL =     @"http://210.107.227.23/_app/do_regist_user.php";
-NSString *UPDATE_LAST_INDEX_URL =       @"http://210.107.227.23/_app/do_update_smslogidx.php";
+NSString *PHONE_NUMBER_AUTHORIZE_URL =  @"http://darc1004.com/_app/send_auth_sms.php";
+NSString *AUTHORIZE_CONFIRM_URL =       @"http://darc1004.com/_app/do_check_auth_no.php";
+NSString *GET_MESSAGES_URL =            @"http://darc1004.com/_app/get_messages.php";
+NSString *DEVICE_REGISTRATION_URL =     @"http://darc1004.com/_app/do_regist_user.php";
+NSString *UPDATE_LAST_INDEX_URL =       @"http://darc1004.com/_app/do_update_smslogidx.php";
 
 
 
