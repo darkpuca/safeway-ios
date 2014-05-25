@@ -28,10 +28,12 @@
                          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 + (void)requestMessages:(NSString *)token
+            phoneNumber:(NSString *)phoneNumber
                 success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                 failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 + (void)requestUpdateLastMessageIndex:(NSString *)token
+                          phoneNumber:(NSString *)phoneNumber
                                 index:(NSInteger)index
                               success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;

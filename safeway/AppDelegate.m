@@ -65,7 +65,18 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    // 앱이 Active 될 때, 현재 화면이 메세지 화면이면 정보 갱신
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+
+    if ([navigationController.topViewController isKindOfClass:[MasterViewController class]])
+    {
+        MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
+        [controller updateMessages];
+        [controller.tableView reloadData];
+    }
+
+
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -216,6 +227,7 @@
     if ([navigationController.topViewController isKindOfClass:[MasterViewController class]])
     {
         MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
+        [controller playNotiSound];
         [controller updateMessages];
         [controller.tableView reloadData];
     }
@@ -231,5 +243,6 @@
     NSError *error;
     [[NSFileManager defaultManager] removeItemAtPath:storeURL.path error:&error];
 }
+
 
 @end

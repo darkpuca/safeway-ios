@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A3069301931C7D1009FC071 /* noti_sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A30692F1931C7D1009FC071 /* noti_sound.wav */; };
+		1A3069321931C8CC009FC071 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A3069311931C8CC009FC071 /* AVFoundation.framework */; };
+		1A3069361931F436009FC071 /* new-mail.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A3069351931F436009FC071 /* new-mail.wav */; };
+		1A3069381931F50C009FC071 /* ReceivedMessage.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1A3069371931F50C009FC071 /* ReceivedMessage.wav */; };
 		1A89732D18DEEE28004F06CD /* AuthorizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */; };
 		1A910CF51928D72200F300B3 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A910CF41928D72200F300B3 /* SettingViewController.m */; };
 		1AA893E318D4180B000AA769 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA893E218D4180B000AA769 /* Foundation.framework */; };
@@ -41,6 +45,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A30692F1931C7D1009FC071 /* noti_sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = noti_sound.wav; path = ../noti_sound.wav; sourceTree = "<group>"; };
+		1A3069311931C8CC009FC071 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		1A3069351931F436009FC071 /* new-mail.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "new-mail.wav"; sourceTree = "<group>"; };
+		1A3069371931F50C009FC071 /* ReceivedMessage.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ReceivedMessage.wav; sourceTree = "<group>"; };
 		1A89732B18DEEE28004F06CD /* AuthorizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AuthorizeViewController.h; sourceTree = "<group>"; };
 		1A89732C18DEEE28004F06CD /* AuthorizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AuthorizeViewController.m; sourceTree = "<group>"; };
 		1A910CF31928D72200F300B3 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -77,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A3069321931C8CC009FC071 /* AVFoundation.framework in Frameworks */,
 				1AA893E518D4180B000AA769 /* CoreGraphics.framework in Frameworks */,
 				1AA893E918D4180B000AA769 /* CoreData.framework in Frameworks */,
 				1AA893E718D4180B000AA769 /* UIKit.framework in Frameworks */,
@@ -122,6 +131,7 @@
 		1AA893E118D4180B000AA769 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1A3069311931C8CC009FC071 /* AVFoundation.framework */,
 				1AA893E218D4180B000AA769 /* Foundation.framework */,
 				1AA893E418D4180B000AA769 /* CoreGraphics.framework */,
 				1AA893E618D4180B000AA769 /* UIKit.framework */,
@@ -146,6 +156,9 @@
 				1A910CF31928D72200F300B3 /* SettingViewController.h */,
 				1A910CF41928D72200F300B3 /* SettingViewController.m */,
 				1AA893F618D4180B000AA769 /* Main.storyboard */,
+				1A30692F1931C7D1009FC071 /* noti_sound.wav */,
+				1A3069351931F436009FC071 /* new-mail.wav */,
+				1A3069371931F50C009FC071 /* ReceivedMessage.wav */,
 				1AA8940218D4180B000AA769 /* Images.xcassets */,
 				1AA893F918D4180B000AA769 /* safeway.xcdatamodeld */,
 				1AA893EB18D4180B000AA769 /* Supporting Files */,
@@ -262,7 +275,10 @@
 			files = (
 				1AA8940318D4180B000AA769 /* Images.xcassets in Resources */,
 				1AA893EF18D4180B000AA769 /* InfoPlist.strings in Resources */,
+				1A3069301931C7D1009FC071 /* noti_sound.wav in Resources */,
 				1AA893F818D4180B000AA769 /* Main.storyboard in Resources */,
+				1A3069361931F436009FC071 /* new-mail.wav in Resources */,
+				1A3069381931F50C009FC071 /* ReceivedMessage.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

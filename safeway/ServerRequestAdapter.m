@@ -69,13 +69,14 @@ NSString *UPDATE_LAST_INDEX_URL =       @"http://darc1004.com/_app/do_update_sms
     [manager POST:DEVICE_REGISTRATION_URL parameters:params success:success failure:failure];
 }
 
-+ (void)requestMessages:(NSString *)token success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
++ (void)requestMessages:(NSString *)token phoneNumber:(NSString *)phoneNumber success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.responseSerializer = responseSerializer;
 
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:1];
+    [params setValue:phoneNumber forKey:@"telno"];
     [params setValue:token forKey:@"uid"];
 
     NSLog(@"request url:\n%@\nparams:\n%@\n", GET_MESSAGES_URL, params);
@@ -83,13 +84,14 @@ NSString *UPDATE_LAST_INDEX_URL =       @"http://darc1004.com/_app/do_update_sms
     [manager POST:GET_MESSAGES_URL parameters:params success:success failure:failure];
 }
 
-+ (void)requestUpdateLastMessageIndex:(NSString *)token index:(NSInteger)index success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
++ (void)requestUpdateLastMessageIndex:(NSString *)token phoneNumber:(NSString *)phoneNumber index:(NSInteger)index success:(void (^)(AFHTTPRequestOperation *, id))success failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.responseSerializer = responseSerializer;
 
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithCapacity:2];
+    [params setValue:phoneNumber forKey:@"telno"];
     [params setValue:token forKey:@"uid"];
     [params setValue:[NSNumber numberWithInteger:index] forKey:@"smslogidx"];
 

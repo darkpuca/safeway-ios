@@ -7,15 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVFoundation/AVAudioPlayer.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 #import <CoreData/CoreData.h>
 
-@interface MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface MasterViewController : UITableViewController <NSFetchedResultsControllerDelegate, AVAudioPlayerDelegate>
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 - (void)updateMessages;
+- (void)playNotiSound;
 
 
 @end

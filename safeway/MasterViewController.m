@@ -19,7 +19,7 @@ static const CGFloat messageCellHeight = 72.0f;
 
 @interface MasterViewController ()
 
-@property (nonatomic, strong) NSString *deviceToken;
+@property (nonatomic, strong) NSString *deviceToken, *phoneNumber;
 @property (nonatomic, strong) NSArray *messages;
 @property (nonatomic, assign) BOOL newMessageExist;
 
@@ -27,7 +27,6 @@ static const CGFloat messageCellHeight = 72.0f;
 - (void)insertMessages:(NSArray *)messages;
 - (void)updateLastIndex:(NSInteger)index;
 - (void)scrollToLastMessage:(BOOL)animated;
-
 
 @end
 
@@ -69,6 +68,7 @@ static const CGFloat messageCellHeight = 72.0f;
     {
         // 정상 인증된 기기이면 메세지 리스트 정보 갱신
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        _phoneNumber = [userDefaults valueForKey:@"phone_number"];
         _deviceToken = [userDefaults valueForKey:@"device_token"];
 
         // clear core data
@@ -382,9 +382,14 @@ static const CGFloat messageCellHeight = 72.0f;
 
 - (void)updateMessages
 {
+    // clear notifications number
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+
     [SVProgressHUD show];
 
     [ServerRequestAdapter requestMessages:_deviceToken
+                              phoneNumber:_phoneNumber
                                   success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                       BOOL added = NO;
                                       NSDictionary *responseDict = [ServerRequestAdapter parseResponse:responseObject];
@@ -407,6 +412,8 @@ static const CGFloat messageCellHeight = 72.0f;
                                       [self.tableView reloadData];
                                       [SVProgressHUD dismiss];
 
+                                      if (added) [self playNotiSound];
+
                                       [self scrollToLastMessage:added];
                                   }
                                   failure:^(AFHTTPRequestOperation *operation, NSError *error){
@@ -419,6 +426,7 @@ static const CGFloat messageCellHeight = 72.0f;
 - (void)updateLastIndex:(NSInteger)index
 {
     [ServerRequestAdapter requestUpdateLastMessageIndex:_deviceToken
+                                            phoneNumber:_phoneNumber
                                                   index:index
                                                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
@@ -433,6 +441,23 @@ static const CGFloat messageCellHeight = 72.0f;
     NSIndexPath *lastIndexPath = [self.fetchedResultsController indexPathForObject:lastObject];
 
     [self.tableView scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+}
+
+
+- (void)playNotiSound
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ReceivedMessage" ofType:@"wav"];
+//    NSError *error = nil;
+//    AVAudioPlayer* theAudio=[[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:&error];
+//    theAudio.delegate = self;
+//    [theAudio play];
+//    NSLog(@"playNotiSound, e: %@", error.description);
+
+    SystemSoundID soundID;
+
+    NSURL *filePath = [NSURL fileURLWithPath:path];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)filePath, &soundID);
+    AudioServicesPlaySystemSound(soundID);
 }
 
 @end

@@ -228,7 +228,7 @@
     else if (200 == alertView.tag && 0 == buttonIndex)
     {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        [userDefaults setObject:_phoneNumber forKey:@"phone_number"];
+        [userDefaults setValue:_phoneNumber forKey:@"phone_number"];
         [userDefaults setValue:_userType forKey:@"user_type"];
         [userDefaults setBool:YES forKey:@"is_authorized"];
         [userDefaults synchronize];
