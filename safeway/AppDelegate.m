@@ -227,7 +227,7 @@
     if ([navigationController.topViewController isKindOfClass:[MasterViewController class]])
     {
         MasterViewController *controller = (MasterViewController *)navigationController.topViewController;
-        [controller playNotiSound];
+//        [controller playNotiSound];
         [controller updateMessages];
         [controller.tableView reloadData];
     }

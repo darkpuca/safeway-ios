@@ -312,7 +312,7 @@ static const CGFloat messageCellHeight = 72.0f;
 
     CGRect messageRect = messageLabel.frame;
 
-    CGSize maximumSize = CGSizeMake(messageRect.size.width, 9999);
+    CGSize maximumSize = CGSizeMake(messageRect.size.width, 46);
     CGSize messageSize = [messageString sizeWithFont:messageLabel.font
                                    constrainedToSize:maximumSize
                                        lineBreakMode:messageLabel.lineBreakMode];
@@ -412,7 +412,8 @@ static const CGFloat messageCellHeight = 72.0f;
                                       [self.tableView reloadData];
                                       [SVProgressHUD dismiss];
 
-                                      if (added) [self playNotiSound];
+                                      if (added)
+                                          [self playNotiSound];
 
                                       [self scrollToLastMessage:added];
                                   }

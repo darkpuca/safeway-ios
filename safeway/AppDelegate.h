@@ -22,6 +22,5 @@
 - (NSURL *)applicationDocumentsDirectory;
 
 - (void)clearCoreData;
-- (void)playNotiSound;
 
 @end
